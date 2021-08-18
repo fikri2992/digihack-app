@@ -3,7 +3,8 @@ import client from '../lib/http-client';
 const endpoint = '/interactions';
 
 export default {
-	// Create
+
+	// Create categorie
 	create(params, cb, errorCb) {
 		const responseHandler = (response) => {
 			if (cb) cb(response.data);
@@ -16,7 +17,8 @@ export default {
 			.then(responseHandler)
 			.catch(errorHandler);
 	},
-	
+
+
 	// Get
 	get(id, cb, errorCb) {
 		const url = `${endpoint}/${id}`;
@@ -31,23 +33,8 @@ export default {
 			.catch(errorHandler);
 	},
 
-	// Get by Slug
-	getBySlug(slug, cb, errorCb) {
-		// console.log(slug);
-		const url = `${endpoint}/slug/${slug}`;
-		const responseHandler = (response) => {
-			if (cb) cb(response.data);
-		};
-		const errorHandler = (e) => {
-			if (errorCb) errorCb(e);
-		};
-		client.get(url)
-			.then(responseHandler)
-			.catch(errorHandler);
-	},
-
-	// Get List
-	getList(params, cb, errorCb) {
+	// Get categories
+	getAll(params, cb, errorCb) {
 		const responseHandler = (response) => {
 			if (cb) cb(response.data);
 		};
@@ -60,7 +47,7 @@ export default {
 			.catch(errorHandler);
 	},
 
-	// Update
+	// Update categories
 	update(id, params, cb, errorCb) {
 		const url = `${endpoint}/${id}`;
 		client.put(url, params)
@@ -71,8 +58,8 @@ export default {
 				if (errorCb) errorCb(e);
 			});
 	},
-	
-	// Delete
+
+	// Delete categories
 	delete(id, cb, errorCb) {
 		const url = `${endpoint}/${id}`;
 		client.delete(url)
@@ -83,5 +70,4 @@ export default {
 				if (errorCb) errorCb(e);
 			});
 	},
-	
-};
+}

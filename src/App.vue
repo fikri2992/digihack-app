@@ -2,34 +2,34 @@
     <div id="app">
       <!-- Navbar -->
       <md-app>
-        <md-app-toolbar class="md-primary">
+        <md-app-toolbar class="md-primary" v-if="isLoggingIn">
           <span class="md-title">Engage More</span>
         </md-app-toolbar>
 
-        <md-app-drawer md-permanent="clipped">
-          <md-list>
+        <md-app-drawer md-permanent="clipped" v-if="isLoggingIn">
+          <md-list class="text-nav">
             <md-list-item>
-            <span class="md-list-item-text">Create Polling</span>
+            <router-link to="/pollings" class="text-nav"><span class="md-list-item-text">Create Polling</span></router-link>
             </md-list-item>
 
             <md-list-item>
-            <span class="md-list-item-text">Create QnA</span>
+            <router-link to="/qnas" class="text-nav"><span class="md-list-item-text">Create QnA</span></router-link>
             </md-list-item>
 
             <md-list-item>
-            <span class="md-list-item-text">Interaction Report</span>
+            <span class="text-nav">Interaction Report</span>
             </md-list-item>
 
             <md-list-item>
-            <span class="md-list-item-text">Offer</span>
+            <span class="text-nav">Offer</span>
             </md-list-item>
 
             <md-list-item>
-            <span class="md-list-item-text">Profile</span>
+            <span class="text-nav">Profile</span>
             </md-list-item>
 
             <md-list-item>
-            <span class="md-list-item-text">Logout</span>
+            <span class="text-nav">Logout</span>
             </md-list-item>
           </md-list>
         </md-app-drawer>

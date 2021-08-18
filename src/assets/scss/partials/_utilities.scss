@@ -183,6 +183,14 @@
 	color: #fff !important;
 }
 
+.text-nav {
+	text-decoration: none!important;
+	color: black!important;
+	&:hover{
+		color: white!important;
+	}
+}
+
 .text-left-sm {
 	@include media-breakpoint-down(sm) {
 		text-align: left !important;
@@ -547,4 +555,8 @@
 .jumbo-font {
 	font-size: 20em;
 	padding-top: 10%;
+}
+
+.w-58 {
+	width: 46%!important;
 }
