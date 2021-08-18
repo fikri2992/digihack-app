@@ -376,6 +376,7 @@ export default {
 				this.selectedPolling = (item);
 				this.$set(this.pollings, index, item);
 			}
+			console.log(index)
 		},
 		editItemPolling(item) {
 			this.selectedPolling = item;
@@ -414,7 +415,9 @@ export default {
 		},
 		addOptions() {
 			// const content = this.contentPolling;
+			console.log(this.contentPolling)
 			let options = this.contentPolling ? this.contentPolling : [];
+			console.log(options)
 			const option = {};
 			option.name = this.nameOption;
 			option.key = options.length + 1;
