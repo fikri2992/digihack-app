@@ -45,7 +45,6 @@ import 'bootstrap';
 
 import {
 	i18n,
-	loadLanguageAsync,
 } from './setup/i18n-setup';
 import './registerServiceWorker';
 

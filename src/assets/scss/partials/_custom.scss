@@ -84,3 +84,26 @@
 .error-phone .input-tel__input {
     border-color: red!important;
 }
+
+.input {
+	border-bottom: 1px solid rgb(202, 202, 202);
+}
+
+.md-app-content {
+	min-height: 93vh!important;
+}
+.half {
+    height: 42.7vh;
+}
+.md-drawer {
+	width: 250px!important;
+}
+
+.active-table {
+	background-color: $color-primary;
+	color: white;
+}
+
+.disabled-section {
+	width: 85%; height:50%; background-color: white; position: absolute; z-index: 99; opacity: 0.5;
+}

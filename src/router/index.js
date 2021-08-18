@@ -69,6 +69,24 @@ export default new Router({
 				hideSidebar: true,
 			},
 		},
+		{
+			path: '/pollings',
+			name: 'Pollings',
+			component: loadView('Interactions'),
+			meta: {
+				title: 'Pollings',
+				gtm: 'Pollings',
+			},
+		},
+		{
+			path: '/qnas',
+			name: 'QNAS',
+			component: loadView('Interactions'),
+			meta: {
+				title: 'QNAS',
+				gtm: 'QNAS',
+			},
+		},
 		// Redirect to 404 page, if no match found
 		{
 			path: '*',
