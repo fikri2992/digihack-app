@@ -17,7 +17,7 @@
 <script>
 import userApi from '../api/users'
 export default {
-	name: 'Error404',
+	name: 'OfferEditor',
 	components: {
 
     },

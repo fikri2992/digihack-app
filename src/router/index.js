@@ -97,6 +97,15 @@ export default new Router({
 			},
 		},
 		{
+			path: '/polling/preview/:id',
+			name: 'PollingPreview',
+			component: loadView('InteractionPreview'),
+			meta: {
+				title: 'Pollings',
+				gtm: 'Pollings',
+			},
+		},
+		{
 			path: '/qnas',
 			name: 'QNAS',
 			component: loadView('Interactions'),

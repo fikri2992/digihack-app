@@ -108,7 +108,6 @@ import interactionsApi from '@/api/interaction';
 import { getAxiosErrorMessage } from '@/lib/helper';
 
 
-
 export default {
 	name: 'Interactions',
 	components: {
