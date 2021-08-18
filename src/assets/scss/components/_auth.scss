@@ -1,0 +1,73 @@
+.page-auth {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    margin: auto;
+	.auth-box {
+		margin: auto;
+        max-width: 388px;
+        max-height: 681px;
+        padding: 20px 20px;
+        border-radius: 2%;
+	}
+	.forgot-password-link {
+		float:right;
+		font-size:12px;
+	}
+}
+
+.material-icons-password {
+	cursor: pointer;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size:25px;
+	color: #2C96FF;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+	-webkit-font-smoothing: antialiased;
+	position: absolute;
+	right: 0;
+}
+
+.card-social-media {
+    border-radius: 5px;
+    .card-content{
+        margin: 10px;
+        margin-left: 20px;
+    }
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #D2D6DC;
+}
+.separator::before {
+    margin-right: .5em;
+}
+.separator::after {
+    margin-left: .5em;
+}
+
+.reset-box {
+    margin: auto;
+    max-width: 388px;
+    max-height: 273px;
+    padding: 20px 20px;
+    border-radius: 2%;
+}
