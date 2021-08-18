@@ -117,3 +117,7 @@
 .md-list-item:hover .md-list-item-content {
 	background-color: $color-primary!important;
 }
+
+.active-md-list.md-list-item {
+	background-color: $color-primary!important;
+}
