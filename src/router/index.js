@@ -97,6 +97,15 @@ export default new Router({
 			},
 		},
 		{
+			path: '/pollings/preview/:id',
+			name: 'PollingPreview',
+			component: loadView('InteractionPreview'),
+			meta: {
+				title: 'Pollings',
+				gtm: 'Pollings',
+			},
+		},
+		{
 			path: '/offer',
 			name: 'Offer',
 			component: loadView('Offers'),

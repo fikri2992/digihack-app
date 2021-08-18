@@ -177,7 +177,7 @@
 										<div class="is-loading large"></div>
 									</div>
 									<tr
-										v-for="(item, index) in QNAS"
+										v-for="(item, index) in filteredQNAS"
 										:key="item.id">
 										<td @click="selectQNA(item)" class="pt-3 pointer" :class="{'active-table': selectedQNA && selectedQNA.id === item.id}">{{ numberingListQNA(index) }}</td>
 										<td @click="selectQNA(item)" class="pt-3 pointer" :class="{'active-table': selectedQNA && selectedQNA.id === item.id}"><div class="truncate-description-category">{{item.name }}</div></td>
@@ -300,6 +300,11 @@ export default {
 		contentQNA() {
 			const content = this.selectedQNA && this.selectedQNA.content && this.selectedQNA.content.length > 0 ? JSON.parse(this.selectedQNA.content) : null;
 			return content;
+		},
+		filteredQNAS() {
+			const filter = item => (item.type === 'qna');
+			return this.QNAS.filter(filter);
+			
 		},
 		fetchParamsPolling() {
 			const params = {
@@ -521,8 +526,6 @@ export default {
 				const QNAS = response.data;
 				if (QNAS.length < this.limit) this.isAll = true;
 				this.QNAS = QNAS;
-				const filter = item => (item.type === 'qna');
-				this.QNAS.filter(filter);
 				this.totalQNAS = response.total;
 				this.lastPageQNAS = response.lastPage;
 				this.isFetchingQNA = false;

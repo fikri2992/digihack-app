@@ -2,14 +2,14 @@
     <div id="app">
 		<!-- Navbar -->
 		<md-app>
-        <md-app-toolbar class="md-primary" v-if="isLoggingIn">
+        <md-app-toolbar class="md-primary" v-if="isLoggingIn && !hideToolbar">
 			<div class="d-flex">
 				<div class="md-title">Engage More</div>
 				<div class="md-title">{{user && user.name ? user.name : ''}}</div>
 			</div>
         </md-app-toolbar>
 
-        <md-app-drawer md-permanent="clipped" v-if="isLoggingIn">
+        <md-app-drawer md-permanent="clipped" v-if="isLoggingIn && !hideToolbar">
 			<md-list class="text-nav">
 			<router-link to="/" class="text-nav">
 				<md-list-item :class="{'bg-primary': activeRouteName === 'Home'}">
@@ -115,9 +115,16 @@ export default {
 			isLoggingIn: 'isLoggingIn',
 		}),
 		activeRouteName() {
-			console.log(this.$route.name);
 			return this.$route.name;
 		},
+		hideToolbar() {
+			const hideNavbar = [
+				'PollingPreview',
+
+			]
+			return hideNavbar.includes(this.activeRouteName)
+			
+		}
 	},
 	methods: {
 		...mapActions({

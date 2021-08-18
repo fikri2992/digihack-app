@@ -1,14 +1,14 @@
 <template>
-    <div>
-        <div v-for="(polling, index) in contentPolling" :key="index" class="d-flex">
-            <button @click="pick(polling.key)" class="mb-4 mr-4" > {{ polling.key }} </button> {{ polling.name }}
+    <div class="d-flex" style="margin-top:35vh; margin-left:25vh">
+        <div v-for="(polling, index) in contentPolling" :key="index" class="mr-3 text-center">
+            <button style="width:300px; height:150px;" @click="pick(polling.key)" class="mb-2 mr-4" > {{ polling.name }} </button> 
         </div>
     </div>
 </template>
 
 <script>
 import interactionsApi from '../api/interaction.js'
-
+import userInteraction from '../api/userInteraction.js'
 
 export default {
 	name: 'InteractionPreview',
@@ -23,7 +23,12 @@ export default {
         };
 	},
 	sockets: {
-
+		connect() {
+			console.log('connnected')
+		},
+		create(data) {
+			console.log(data);
+		}
 	},
 	mounted() {
 
@@ -31,6 +36,7 @@ export default {
 	created() {
         this.pollingId = this.$route && this.$route.params && this.$route.params.id ? this.$route.params.id: null;
         this.getPolling(this.pollingId)
+		
     },
 	destroyed() {
 
@@ -46,11 +52,30 @@ export default {
 		},
     },
 	methods: {
+		pick(key) {
+
+			const callback = (data) => {
+				console.log(data)
+			};
+			const errCallback = (e) => {
+				console.log(e)
+			};
+
+			const params = {
+				interaction_id: this.polling.id,
+				phone:'',
+				answer:key,
+				price:0,
+			}
+
+			userInteraction.create(params, callback, errCallback)
+		},
+
         getPolling(id) {
 			const callback = (response) => {
 				const polling = response.data;
-                console.log(polling)
 				this.polling = polling;
+                this.connectToSocket()
 			};
 			const errorCallback = (e) => {
 				const message = getAxiosErrorMessage(e);
@@ -62,6 +87,10 @@ export default {
 				});
 			};
 			interactionsApi.get(id, callback, errorCallback);
+		},
+		connectToSocket() {
+			const roomId = `room_interaction_${this.polling.id}`;
+			this.$socket.client.emit('join', roomId);
 		},
     }
 }
