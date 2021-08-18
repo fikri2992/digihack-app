@@ -1,9 +1,8 @@
 import router from '../../router';
 import client from '../../lib/http-client';
 import { removeCookie } from '../../lib/cookie';
-import authApi from '../../api/auth';
+import { loadLanguageAsync } from '@/setup/i18n-setup';
 
-import { loadLanguageAsync } from '../../setup/i18n-setup';
 
 const TOKEN_KEY = 'access_token';
 const LOGIN = 'LOGIN';
@@ -26,12 +25,14 @@ const SET_NAVBAR_VISIBLE = 'SET_NAVBAR_VISIBLE';
 const SET_CLIENT_USER = 'SET_CLIENT_USER';
 const sessionCookieName = 'mp_user';
 
+
 const state = function () {
 	return {
 		location: '/',
 		user: null,
 		role: '',
-		isLoggedIn: !!localStorage.getItem(TOKEN_KEY),
+		isLoggingIn: !!localStorage.getItem(TOKEN_KEY),
+		locale: 'en',
 	};
 };
 
@@ -42,19 +43,47 @@ const mutations = {
 	},
 	[LOGIN_SUCCESS](state) {
 		state.isLoggedIn = true;
+		state.isLoggingIn = true;
 		state.loginError = false;
-		state.isLoggingIn = false;
 	},
+	[SET_LOCALE](state, locale) {
+		state.locale = locale;
+	},
+	[SET_USER](state, user) {
+		state.user = user;
+		state.locale = user.language;
 
+		// Load Language
+		loadLanguageAsync(user.language);
+	},
+	[NAVIGATE](state, to) {
+		state.location = to;
+	},
 };
 
 const actions = {
-
+	setToken({ commit }, data) {
+		const jwt = data.token;
+		localStorage.setItem(TOKEN_KEY, jwt);
+		client.defaults.headers.Authorization = `Bearer ${jwt}`;
+		commit(LOGIN_SUCCESS);
+	},
+	setLocale({ commit }, locale) {
+		commit(SET_LOCALE, locale);
+	},
+	navigate({ commit }, to) {
+		commit(NAVIGATE, to);
+	},
+	setLoggedIn({ commit }) {
+		commit(LOGIN_SUCCESS);
+	},
 };
 
 const getters = {
 	user: state => state.user,
 	role: state => state.role,
+	locale: state => state.locale,
+	isLoggingIn: state => state.isLoggingIn,
 };
 
 export default {

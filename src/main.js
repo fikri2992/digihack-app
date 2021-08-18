@@ -1,10 +1,8 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import Notifications from 'vue-notification';
+import Vue from 'vue';
 import io from 'socket.io-client';
 import VueSocketio from 'vue-socket.io-extended';
+import Notifications from 'vue-notification';
+import VTooltip from 'v-tooltip';
 import {
 	MdField,
 	MdButton,
@@ -19,25 +17,47 @@ import {
 	MdContent,
 	MdSwitch,
 	MdChips,
+	MdTable,
+	MdCard,
+	MdRipple,
+	MdToolbar,
+	MdApp,
+	MdDrawer,
 	// MdMenuContent,
 	// MdSubheader,
 	// MdProgress,
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
+// import 'vue-material/dist/theme/default.css';
+
+
+// number input international
+import VuePhoneNumberInput from 'vue-phone-number-input';
+import 'vue-phone-number-input/dist/vue-phone-number-input.css';
+
+// tailwind
+import '@/assets/scss/vendor/tailwind.css';
+
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import 'bootstrap';
+
+import {
+	i18n,
+	loadLanguageAsync,
+} from './setup/i18n-setup';
+import './registerServiceWorker';
+
+Vue.config.productionTip = false;
 
 const SOCKET_URL = process.env.VUE_APP_SOCKET_URL || 'http://localhost:3000';
 
 // Socket
 const socket = io(SOCKET_URL, {
 	transports: ['websocket'],
-	// reconnection: true, // whether to reconnect automatically
-	// reconnectionAttempts: Infinity, // number of reconnection attempts before giving up
-	// reconnectionDelay: 1000, // how long to initially wait before attempting a new reconnection
-	// reconnectionDelayMax: 5000, // maximum amount of time to wait between reconnection attempts. Each attempt increases the reconnection delay by 2x along with a randomization factor
-	// randomizationFactor: 0.5,
 });
-Vue.use(Notifications);
-Vue.use(VueSocketio, socket, { store });
+
 // Material Design Components
 Vue.use(MdField);
 Vue.use(MdButton);
@@ -53,12 +73,83 @@ Vue.use(MdDialog);
 Vue.use(MdContent);
 Vue.use(MdSwitch);
 Vue.use(MdChips);
-Vue.use(AxiosPlugin);
+Vue.use(MdTable);
+Vue.use(MdCard);
+Vue.use(MdRipple);
+Vue.use(MdRipple);
+Vue.use(MdToolbar);
+Vue.use(MdApp);
+Vue.use(MdDrawer);
+// Vue.use(MdSubheader);
+// Vue.use(MdProgress);
 
-Vue.config.productionTip = false
+Vue.use(VueSocketio, socket, { store });
+Vue.use(Notifications);
+Vue.use(VTooltip);
+
+// phone input
+Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+
+// Route Middleware
+router.beforeEach((to, from, next) => {
+	const { path } = to;
+	const { isLoggingIn } = store.getters;
+
+	const errors = [];
+
+	const alreadyLoggedIn = path === '/login' && isLoggingIn;
+	if (alreadyLoggedIn) errors.push('already_logged_in');
+
+	const isNotAvailable = errors.length > 0;
+	const allowedPaths = [
+		'/',
+		'/login',
+		'/logout',
+		'/reset-password',
+		'/password/reset',
+		'/register',
+		'/magic-link',
+		'/change-password',
+		'/auto_login',
+		'/user/verify',
+		'/confirmation-email',
+		'/register-success',
+	];
+	if (path === '/callback') {
+		next();
+	} else if (!isLoggingIn && path === '/') {
+		next('/login');
+	} else if (!isLoggingIn && !allowedPaths.includes(path)) {
+		next('/login');
+	} else if (isNotAvailable) {
+		next('/');
+	} else {
+		next();
+	}
+});
+
+// Change Title
+router.beforeEach((to, from, next) => {
+	store.dispatch('navigate', { to });
+	const title = to.meta.title || '';
+	document.title = title;
+	next();
+});
+
+// Change Title
+router.beforeEach((to, from, next) => {
+	store.dispatch('navigate', { to });
+	const title = to.meta.title || '';
+	document.title = title;
+	next();
+});
+
+
+
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+    router,
+    store,
+    i18n,
+    render: h => h(App),
+}).$mount('#app');
