@@ -60,6 +60,15 @@ export default new Router({
 			},
 		},
 		{
+			path: '/register-advetiser',
+			name: 'RegisterAdvetiser',
+			component: loadView('RegisterAdvetiser'),
+			meta: {
+				title: `Register Advetiser - ${APP_NAME}`,
+				gtm: 'Register Advetiser',
+			},
+		},
+		{
 			path: '/register-success',
 			name: 'RegisterSuccess',
 			component: loadView('RegisterSuccess'),
