@@ -21,9 +21,16 @@
 				<pollings @close="showPollingModal = false" @saved="insertItemPolling" v-if="showPollingModal" :data="selectedPolling"/>
 				<section class="half"  style="overflow: hidden">
 					<div v-for="item in contentPolling" :key="item.key">
-						<md-field class="input w-58">
-							{{item.name}}
-						</md-field>
+						<div class="d-flex">
+							<md-field class="input w-58">
+								{{item.name}}
+							</md-field>
+							<div @click="removeOption(item.key)" class="mt-3 pointer">
+								<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+									<path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+								</svg>
+							</div>
+						</div>
 					</div>
 					<div>Message</div>
 					<textarea id="w3review" name="w3review" rows="3" class="w-58" style="margin-top: auto;"></textarea>
@@ -287,7 +294,52 @@ export default {
 			if (this.selectedPolling) {
 				interactionsApi.update(this.selectedPolling.id, params, callback, errorCallback);
 			}
-		}
+		},
+		updatePolling(content) {
+			const params = {
+				name: this.selectedPolling.name,
+				description: this.selectedPolling.description,
+				type: this.selectedPolling.type,
+				content: content,
+				status: this.selectedPolling.status,
+				is_published: this.selectedPolling.isPublish,
+			}
+			const callback = (response) => {
+				const polling = response.data;
+				const message = response.message;
+				this.insertItemPolling(polling);
+				console.log(this.pollings);
+				this.$notify({
+					group: 'app',
+					type: 'success',
+					title: this.$t('polling'),
+					text: message,
+				});
+				this.nameOption = '';
+				this.isSavingOptionsPoling = false;
+			};
+			const errorCallback = (e) => {
+				const message = getAxiosErrorMessage(e);
+				this.$notify({
+					group: 'app',
+					type: 'error',
+					title: this.$t('polling'),
+					text: message,
+				});
+				this.isSavingOptionsPoling = false;
+			};
+			if (this.selectedPolling) {
+				interactionsApi.update(this.selectedPolling.id, params, callback, errorCallback);
+			}
+		},
+		removeOption(keyOption) {
+			const index = this.contentPolling.findIndex(({ key }) => key === keyOption);
+			if (index !== -1) {
+				this.contentPolling.splice(index, 1);
+			}
+			const content = JSON.stringify(this.contentPolling);
+			this.updatePolling(content);
+		},
 	},
 	watch: {},
 	mounted() {},
