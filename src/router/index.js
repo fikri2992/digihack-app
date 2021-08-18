@@ -138,6 +138,15 @@ export default new Router({
 				gtm: 'QNAS',
 			},
 		},
+		{
+			path: '/ad-media',
+			name: 'AdMedia',
+			component: loadView('AdMedia'),
+			meta: {
+				title: 'AdMedia',
+				gtm: 'AdMedia',
+			},
+		},
 		// Redirect to 404 page, if no match found
 		{
 			path: '*',
