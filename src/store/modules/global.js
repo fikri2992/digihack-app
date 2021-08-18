@@ -2,6 +2,7 @@ import router from '../../router';
 import client from '../../lib/http-client';
 import { removeCookie } from '../../lib/cookie';
 import { loadLanguageAsync } from '@/setup/i18n-setup';
+import authApi from '@/api/auth';
 
 
 const TOKEN_KEY = 'access_token';
@@ -70,6 +71,7 @@ const actions = {
 
 		const callback = function (response) {
 			const user = response.data;
+			console.log(user)
 			commit(SET_USER, user);
 		};
 		const errorCallback = function () {
