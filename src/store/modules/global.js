@@ -2,6 +2,7 @@ import router from '../../router';
 import client from '../../lib/http-client';
 import { removeCookie } from '../../lib/cookie';
 import { loadLanguageAsync } from '@/setup/i18n-setup';
+import authApi from '@/api/auth';
 
 
 const TOKEN_KEY = 'access_token';
@@ -52,7 +53,6 @@ const mutations = {
 	[SET_USER](state, user) {
 		state.user = user;
 		state.locale = user.language;
-
 		// Load Language
 		loadLanguageAsync(user.language);
 	},
@@ -66,7 +66,18 @@ const actions = {
 		const jwt = data.token;
 		localStorage.setItem(TOKEN_KEY, jwt);
 		client.defaults.headers.Authorization = `Bearer ${jwt}`;
+
 		commit(LOGIN_SUCCESS);
+
+		const callback = function (response) {
+			const user = response.data;
+			console.log(user)
+			commit(SET_USER, user);
+		};
+		const errorCallback = function () {
+			commit(FETCH_USER_END);
+		};
+		authApi.getProfile(callback, errorCallback);
 	},
 	setLocale({ commit }, locale) {
 		commit(SET_LOCALE, locale);
