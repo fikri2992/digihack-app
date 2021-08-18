@@ -24,6 +24,24 @@ export default new Router({
 			},
 		},
 		{
+			path: '/offer',
+			name: 'Offer',
+			component: loadView('Offers'),
+			meta: {
+				title: `Offer - ${APP_NAME}`,
+				gtm: 'Offer',
+			},
+		},
+		{
+			path: '/offer/:id',
+			name: 'OfferEditor',
+			component: loadView('OfferEditor'),
+			meta: {
+				title: `Offer - ${APP_NAME}`,
+				gtm: 'Offer',
+			},
+		},
+		{
 			path: '/login',
 			name: 'Login',
 			component: loadView('Login'),
