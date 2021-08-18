@@ -151,8 +151,8 @@ export default {
 			return total;
 		},
 		contentPolling() {
-			const content = this.selectedPolling && this.selectedPolling.content && this.selectedPolling.content.length > 0 ? JSON.parse(this.selectedPolling.content) : null;
-			console.log(content);
+			const content = this.selectedPolling && this.selectedPolling.content && this.selectedPolling.content.length > 0 ? 
+			JSON.parse(this.selectedPolling.content) : null;
 			return content;
 		},
 	},
@@ -204,8 +204,10 @@ export default {
 				this.pollings.push(item);
 				this.selectedPolling = item;
 			} else {
+				this.selectedPolling = (item);
 				this.$set(this.pollings, index, item);
 			}
+			console.log(index)
 		},
 		editItemPolling(item) {
 			this.selectedPolling = item;
@@ -244,7 +246,9 @@ export default {
 		},
 		addOptions() {
 			// const content = this.contentPolling;
+			console.log(this.contentPolling)
 			let options = this.contentPolling ? this.contentPolling : [];
+			console.log(options)
 			const option = {};
 			option.name = this.nameOption;
 			option.key = options.length + 1;
@@ -264,7 +268,6 @@ export default {
 				const polling = response.data;
 				const message = response.message;
 				this.insertItemPolling(polling);
-				console.log(this.pollings);
 				this.$notify({
 					group: 'app',
 					type: 'success',
