@@ -10,7 +10,7 @@
 			<div v-for="item in medias" :key="item.id" class="card--blue mr-3">
 				<div class="card-body"> 
 					<div class="card-featured">
-						<img alt="Engage More" :src="item.url">
+						<img alt="Engage More" :src="`${env}/uploads/${item.url}`">
 					</div>
 				</div>
 			</div>
@@ -31,6 +31,7 @@ export default {
 			medias: [],
 			isFetching: false,
 			isUploadingPicture: false,
+			env: process.env.VUE_APP_API_URL
 		};
 	},
 	sockets: {},
@@ -98,7 +99,7 @@ export default {
 			const params = {
 				page: 1,
 				limit: 8,
-				order_by: 'created)at',
+				order_by: 'created_at',
 				sort_by: 'desc',
 			}
 			mediasApi.getList(params, callback, errorCallback);

@@ -1,6 +1,6 @@
 import client from '../lib/http-client';
 
-const endpoint = '/useroffers';
+const endpoint = '/media';
 
 export default {
 	// Create
