@@ -1,16 +1,16 @@
 <template>
 <div class="page page-template">
-	<label class="btn btn-primary text-black pointer">'
+	<label class="btn btn-primary text-black pointer">
 		<span class="">Upload</span>
 		<input type="file" class="hidden" @change="addMedia" accept=".png,.gif,.jpeg,.jpg"/>
 	</label>
-	<div>
-		<div class="cards d-flex">
+	<div class="template-editor-wrapper relative">
+		<div class="templates gallery-grid">
 			<!-- offer -->
-			<div v-for="item in medias" :key="item.id" class="card--blue mr-3">
-				<div class="card-body"> 
-					<div class="card-featured">
-						<img alt="Engage More" :src="`${env}/uploads/${item.url}`">
+			<div class="template d-block" v-for="item in medias" :key="item.id">
+				<div class="d-flex justify-content-between relative"> 
+					<div class="image-gallery">
+						<img alt="Engage More" class="image-gallery" :src="`${env}/uploads/${item.url}`">
 					</div>
 				</div>
 			</div>
@@ -56,10 +56,16 @@ export default {
 					
 					params.append('file', file);
 					params.append('user_id', 3);
-					params.append('filetype', 'png');  
-					console.log(params)
+					const type = files[0].type.replace('image/','');
+					params.append('filetype', type);  
 					const callback = (response) => {
-						console.log(response);
+						const item = response.data;
+						const index = this.medias.findIndex(({ id }) => id === item.id);
+						if (index === -1) {
+							this.medias.unshift(item);
+						} else {
+							this.$set(this.medias, index, item);
+						}
 						this.isUploadingPicture = false;
 					};
 					const errorCallback = () => {

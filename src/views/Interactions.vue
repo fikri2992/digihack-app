@@ -8,17 +8,22 @@
 				<pollings @close="showPollingModal = false" @saved="insertItemPolling" v-if="showPollingModal" :data="selectedPolling"/>
 				<section class="half"  style="overflow: hidden">
 					<div class="grid-container">
-
 						<div>
 							<div class="d-flex">
 								<md-button class="btn-primary ml-0" :disabled="!selectedPolling">Generate Embedable URL</md-button>
 							</div>
 							<div class="d-flex">
 								<md-field class="input mb-0">
-										<label>Option</label>
+									<label>Option</label>
 									<md-input :disabled="contentPolling && contentPolling.length === 4" v-model="nameOption"></md-input>
 								</md-field>
-								<md-button @click="addOptions" :disabled="(contentPolling && contentPolling.length === 4) || !selectedPolling || !nameOption" class="btn-primary ml-0 pl-2 pr-2 text-black">'
+								<label class="btn btn-primary pointer mr-3 ml-4" :class="{'disabled': !selectedPolling || !nameOption}">
+									<svg style="width:24px;height:24px" viewBox="0 0 24 24" class="pt-1">
+										<path fill="currentColor"  d="M5,3A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H14.09C14.03,20.67 14,20.34 14,20C14,19.32 14.12,18.64 14.35,18H5L8.5,13.5L11,16.5L14.5,12L16.73,14.97C17.7,14.34 18.84,14 20,14C20.34,14 20.67,14.03 21,14.09V5C21,3.89 20.1,3 19,3H5M19,16V19H16V21H19V24H21V21H24V19H21V16H19Z" />
+									</svg>
+									<input type="file" @change="addmedia" class="hidden" accept=".png,.gif,.jpeg,.jpg"/>
+								</label>
+								<md-button @click="addOptions" :disabled="(contentPolling && contentPolling.length === 4) || !selectedPolling || !nameOption" class="btn-primary ml-0 pl-2 pr-2 mt-0 text-black" style="height: 45px">
 									<span class="pl-2 pr-2">Add Options</span>
 								</md-button>
 							</div>
@@ -28,6 +33,9 @@
 									<md-field class="input">
 										{{item.name}}
 									</md-field>
+									<div class="text-center mt-3 mr-3 ml-3" style="height: 40px; width: 40px">
+										<img v-if="item.url" alt="Engage More" width="60px" height="60px" :src="`${env}/uploads/${item.url}`">
+									</div>
 									<div @click="removeOption(item.key)" class="mt-3 pointer">
 										<svg style="width:24px;height:24px" viewBox="0 0 24 24">
 											<path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
@@ -225,6 +233,8 @@ import QNAS from '@/components/QnAForm.vue';
 import Pagination from '@/components/Pagination.vue';
 import interactionsApi from '@/api/interaction';
 import { getAxiosErrorMessage, delay } from '@/lib/helper';
+import mediasApi from '@/api/media';
+import { mapGetters } from 'vuex';
 
 
 export default {
@@ -236,6 +246,7 @@ export default {
 	},
 	data() {
 		return {
+			env: process.env.VUE_APP_API_URL,
 			// polling
 			name: '',
 			description: '',
@@ -257,6 +268,7 @@ export default {
 			isSavingOptionsPolling: false,
 			nameOption: '',
 			message: '',
+			isUploadingPicture: false,
 			// QNAS
 			nameQNA: '',
 			descriptionQNA: '',
@@ -278,6 +290,7 @@ export default {
 			isSavingOptionsQNA: false,
 			nameOptionQNA: '',
 			messageQNA: '',
+			urlImage: '',
 		};
 	},
 	sockets: {},
@@ -321,6 +334,9 @@ export default {
 			};
 			return params;
 		},
+		...mapGetters({
+			user: 'user',
+		}),
 	},
 	methods: {
 		fetchPolling(reset = false, page) {
@@ -375,7 +391,6 @@ export default {
 				this.selectedPolling = (item);
 				this.$set(this.pollings, index, item);
 			}
-			console.log(index)
 		},
 		editItemPolling(item) {
 			this.selectedPolling = item;
@@ -412,14 +427,57 @@ export default {
 		selectPolling(item) {
 			this.selectedPolling = item;
 		},
+		addmedia(e) {
+			const files = e.target.files;
+			if (files.length > 0) {
+				if (files[0].type === 'image/jpeg' || files[0].type === 'image/gif' || files[0].type === 'image/png' || files[0].type === 'image/jpg') {
+					this.isUploadingPicture = true;
+					const file = files[0];
+					if (!file) {
+						this.$notify({
+							group: 'app',
+							type: 'warn',
+							title: 'Upload File',
+							text: 'Sorry, currently we cant upload the file',
+						});
+						return;
+					}
+					const params = new FormData();
+					
+					params.append('file', file);
+					params.append('user_id', this.user && this.user.id ? this.user.id : '');
+					const type = files[0].type.replace('image/','');
+					params.append('filetype', type);  
+					const callback = (response) => {
+						const item = response.data;
+						this.urlImage = item.url;
+						this.isUploadingPicture = false;
+					};
+					const errorCallback = () => {
+						this.isUploadingPicture = false;
+					};
+					mediasApi.upload(params, callback, errorCallback);
+
+				} else {
+					this.$notify({
+						group: 'app',
+						type: 'warning',
+						title: 'Upload Media',
+						text: 'Unsupported file',
+					});
+					// eslint-disable-next-line
+					return;
+				}
+			}
+		},
 		addOptions() {
 			// const content = this.contentPolling;
-			console.log(this.contentPolling)
 			let options = this.contentPolling ? this.contentPolling : [];
 			console.log(options)
 			const option = {};
 			option.name = this.nameOption;
 			option.key = options.length + 1;
+			option.url = this.urlImage;
 			options.push(option);
 			const resultContent = JSON.stringify(options);
 			// content.options = options;
@@ -520,9 +578,10 @@ export default {
 			const callback = (response) => {
 				const QNAS = response.data;
 				if (QNAS.length < this.limit) this.isAll = true;
-				this.QNAS = QNAS;
 				const filter = item => (item.type === 'qna');
-				this.QNAS.filter(filter);
+				QNAS.filter(filter);
+				console.log(QNAS);
+				this.QNAS = QNAS;
 				this.totalQNAS = response.total;
 				this.lastPageQNAS = response.lastPage;
 				this.isFetchingQNA = false;
@@ -700,11 +759,19 @@ export default {
 		selectedQNA() {
 			this.messageQNA = this.selectedQNA.message;
 		},
+		activeRouteName() {
+			if (this.activeRouteName === 'Pollings') {
+				this.fetchPolling();
+			}
+			if (this.activeRouteName === 'QNAS') {
+				this.fetchQNA();
+			}
+		}
 	},
 	mounted() {},
 	created() {
-		this.fetchPolling();
 		this.fetchQNA();
+		this.fetchPolling();
 	},
 	destroyed() {},
 	beforeDestroy() {},
