@@ -97,12 +97,36 @@ export default new Router({
 			},
 		},
 		{
-			path: '/polling/preview/:id',
-			name: 'PollingPreview',
-			component: loadView('InteractionPreview'),
+			path: '/offer',
+			name: 'Offer',
+			component: loadView('Offers'),
 			meta: {
-				title: 'Pollings',
-				gtm: 'Pollings',
+				title: `Offer - ${APP_NAME}`,
+				gtm: 'Offer',
+			},
+		}, {
+			path: '/offer/:id',
+			name: 'OfferEditor',
+			component: loadView('OfferEditor'),
+			meta: {
+				title: `Offer - ${APP_NAME}`,
+				gtm: 'Offer',
+			},
+		}, {
+			path: '/offer',
+			name: 'Offer',
+			component: loadView('Offers'),
+			meta: {
+				title: `Offer - ${APP_NAME}`,
+				gtm: 'Offer',
+			},
+		}, {
+			path: '/offer/:id',
+			name: 'OfferEditor',
+			component: loadView('OfferEditor'),
+			meta: {
+				title: `Offer - ${APP_NAME}`,
+				gtm: 'Offer',
 			},
 		},
 		{
@@ -112,6 +136,15 @@ export default new Router({
 			meta: {
 				title: 'QNAS',
 				gtm: 'QNAS',
+			},
+		},
+		{
+			path: '/ad-media',
+			name: 'AdMedia',
+			component: loadView('AdMedia'),
+			meta: {
+				title: 'AdMedia',
+				gtm: 'AdMedia',
 			},
 		},
 		// Redirect to 404 page, if no match found

@@ -1,52 +1,87 @@
 <template>
     <div id="app">
-      <!-- Navbar -->
-      <md-app>
+		<!-- Navbar -->
+		<md-app>
         <md-app-toolbar class="md-primary" v-if="isLoggingIn">
-          <span class="md-title">Engage More</span>
+			<div class="d-flex">
+				<div class="md-title">Engage More</div>
+				<div class="md-title">{{user && user.name ? user.name : ''}}</div>
+			</div>
         </md-app-toolbar>
 
         <md-app-drawer md-permanent="clipped" v-if="isLoggingIn">
-          <md-list class="text-nav">
-            <md-list-item>
-            <router-link to="/pollings" class="text-nav"><span class="md-list-item-text">Create Polling</span></router-link>
-            </md-list-item>
+			<md-list class="text-nav">
+			<router-link to="/" class="text-nav">
+				<md-list-item :class="{'bg-primary': activeRouteName === 'Home'}">
+					<span class="md-list-item-text">Dashboard</span>
+				</md-list-item>
+			</router-link>
 
-            <md-list-item>
-            <router-link to="/qnas" class="text-nav"><span class="md-list-item-text">Create QnA</span></router-link>
-            </md-list-item>
 
-            <md-list-item>
-            <span class="text-nav">Interaction Report</span>
-            </md-list-item>
+            <router-link to="/pollings" class="text-nav">
+				<md-list-item :class="{'bg-primary': activeRouteName === 'Pollings'}">
+					<span class="md-list-item-text">Create Polling</span>
+				</md-list-item>
+			</router-link>
 
-            <md-list-item>
-            <span class="text-nav">Offer</span>
-            </md-list-item>
+			<router-link to="/qnas" class="text-nav">
+				<md-list-item :class="{'bg-primary': activeRouteName === 'QNAS'}">
+					<span class="md-list-item-text">Create QnA</span>
+				</md-list-item>
+			</router-link>
 
-            <md-list-item>
-            <span class="text-nav">Profile</span>
-            </md-list-item>
+			<router-link to="/qnas" class="text-nav">
+				<md-list-item>
+					<span class="md-list-item-text">Interaction Report</span>
+				</md-list-item>
+			</router-link>
+			
+			<router-link to="/offer">
+				<md-list-item class="text-nav" :class="{'bg-primary': activeRouteName === 'Offer'}">
+					<span class="md-list-item-text">Offer</span>
+				</md-list-item>
+			</router-link>
 
-            <md-list-item>
-            <span class="text-nav">Logout</span>
-            </md-list-item>
-          </md-list>
+			<router-link to="/ad-media">
+				<md-list-item class="text-nav" :class="{'bg-primary': activeRouteName === 'AdMedia'}">
+					<span class="md-list-item-text">Ad Media</span>
+				</md-list-item>
+			</router-link>
+			
+			<div class="text-nav pointer" @click="logout">
+				<md-list-item>
+					<span class="md-list-item-text">Logout</span>
+				</md-list-item>
+			</div>
+			
+		</md-list>
         </md-app-drawer>
 
         <md-app-content>
-          <!-- main content -->
-          <router-view/>
+			<!-- main content -->
+			<router-view/>
         </md-app-content>
-      </md-app>
+	</md-app>
 		<!-- Notifications -->
 		<notifications group="app" :ignoreDuplicates="true" position="bottom right" :max="3" :duration="4000" style="z-index: 99989!important;">
 			<template slot="body" slot-scope="props">
 				<div class="vue-notification" :class="props.item.type">
 					<div class="d-flex justify-space-between">
-						<div v-if="props.item.type === 'warning'" class="material-icons mr-2 mtb-a">error_outline</div>
-						<div v-if="props.item.type === 'success'" class="material-icons mr-2 mtb-a">check</div>
-						<div v-if="props.item.type === 'error'" class="material-icons mr-2 mtb-a">clear</div>
+						<div v-if="props.item.type === 'warning'" class="material-icons mr-2 mtb-a">
+							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+								<path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+							</svg>
+						</div>
+						<div v-if="props.item.type === 'success'" class="material-icons mr-2 mtb-a">
+							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+								<path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+							</svg>
+						</div>
+						<div v-if="props.item.type === 'error'" class="material-icons mr-2 mtb-a">
+							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+								<path fill="currentColor" d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" />
+							</svg>
+						</div>
 						<div class="title pt-1"> {{ props.item.text }}</div>
 					</div>
 				</div>
@@ -57,6 +92,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import localforage from 'localforage';
 
 export default {
 	name: 'App',
@@ -78,10 +114,18 @@ export default {
 			user: 'user',
 			isLoggingIn: 'isLoggingIn',
 		}),
+		activeRouteName() {
+			console.log(this.$route.name);
+			return this.$route.name;
+		},
 	},
 	methods: {
 		...mapActions({
 		}),
+		logout() {
+			localStorage.clear();
+			location.reload();
+		},
 	},
 };
 </script>

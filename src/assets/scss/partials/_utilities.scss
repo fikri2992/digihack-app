@@ -187,7 +187,7 @@
 	text-decoration: none!important;
 	color: black!important;
 	&:hover{
-		color: white!important;
+		color: black!important;
 	}
 }
 
@@ -559,4 +559,8 @@
 
 .w-58 {
 	width: 46%!important;
+}
+
+.bg-primary {
+	background-color: $color-primary!important;
 }
