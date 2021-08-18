@@ -101,9 +101,19 @@
 
 .active-table {
 	background-color: $color-primary;
-	color: white;
+	color: black;
 }
 
 .disabled-section {
-	width: 85%; height:50%; background-color: white; position: absolute; z-index: 99; opacity: 0.5;
+	width: 50%; height:50%; background-color: white; position: absolute; z-index: 99; opacity: 0.5;
+}
+
+.grid-container {
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-gap: 30px;
+}
+
+.md-list-item:hover .md-list-item-content {
+	background-color: $color-primary!important;
 }
