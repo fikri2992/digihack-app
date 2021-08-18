@@ -52,9 +52,11 @@ export default {
 						return;
 					}
 					const params = new FormData();
+					
 					params.append('file', file);
-					params.user_id = 3;
-					params.filetype = 'png';  
+					params.append('user_id', 3);
+					params.append('filetype', 'png');  
+					console.log(params)
 					const callback = (response) => {
 						console.log(response);
 						this.isUploadingPicture = false;
