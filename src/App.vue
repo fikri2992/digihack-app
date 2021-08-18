@@ -30,7 +30,7 @@
 				</md-list-item>
 			</router-link>
 
-			<router-link to="/qnas" class="text-nav">
+			<!-- <router-link to="/qnas" class="text-nav">
 				<md-list-item>
 					<span class="md-list-item-text">Interaction Report</span>
 				</md-list-item>
@@ -46,7 +46,7 @@
 				<md-list-item class="text-nav" :class="{'bg-primary': activeRouteName === 'AdMedia'}">
 					<span class="md-list-item-text">Ad Media</span>
 				</md-list-item>
-			</router-link>
+			</router-link> -->
 			
 			<div class="text-nav pointer" @click="logout">
 				<md-list-item>

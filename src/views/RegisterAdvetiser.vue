@@ -2,7 +2,7 @@
 <div class="page page-auth">
 	<div class="card auth-box">
 		<div class="card-body">
-			<h3 class="card-title text-center mb-4 mt-4">{{ $t('Client - Tell us a bit more about you') }}</h3>
+			<h3 class="card-title text-center mb-4 mt-4">{{ $t('Advetiser - Tell us a bit more about you') }}</h3>
 			<div class="card-text">
 				<form @submit.prevent="submit()">
 					<div class="form-group">
@@ -57,11 +57,11 @@ const USER_DEFAULT = {
 	mobile_phone: null,
 	lang: 'en',
 	verification_method: 'email',
-	role: 'user',
+	role: 'client',
 };
 
 export default {
-	name: 'ResetPassword',
+	name: 'RegisterAdvetiser',
 	components: {},
 	data() {
 		return {

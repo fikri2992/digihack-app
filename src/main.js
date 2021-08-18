@@ -107,6 +107,7 @@ router.beforeEach((to, from, next) => {
 		'/reset-password',
 		'/password/reset',
 		'/register',
+		'/register-advetiser',
 		'/magic-link',
 		'/change-password',
 		'/auto_login',

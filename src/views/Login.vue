@@ -14,7 +14,8 @@
 						<input type="password" class="form-control" id="inputPassword" autocomplete="true" v-model="password">
 					</div>
 					<div class="d-flex justify-content-between">
-						<div><router-link to="/register" class="forgot-password-link mb-2">{{ $t('Sign Up') }}</router-link></div>
+						<div><router-link to="/register" class="forgot-password-link mb-2">Daftar client</router-link></div>
+						<div><router-link to="/register-advetiser" class="forgot-password-link mb-2">Daftar Advetiser</router-link></div>
 					</div>
 					<hr>
 					<button type="submit" class="btn btn-primary btn-block mt-4 mb-4" :class="{ 'is-loading': isSubmitting}">Login</button>
