@@ -1,15 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+// import 'es6-promise/auto';
+import Vue from 'vue';
+import Vuex from 'vuex';
+// import createLogger from '../plugins/logger';
+import global from './modules/global';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+const debug = process.env.NODE_ENV !== 'production';
+
+const store = new Vuex.Store({
+	modules: {
+		global,
+	},
+	strict: debug,
+	// plugins: debug ? [createLogger()] : [],
+});
+
+export default store;
