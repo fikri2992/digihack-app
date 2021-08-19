@@ -14,7 +14,7 @@
 						<input type="password" class="form-control" id="inputPassword" autocomplete="true" v-model="password">
 					</div>
 					<div class="d-flex justify-content-between">
-						<div><router-link to="/register" class="forgot-password-link mb-2">Daftar client</router-link></div>
+						<div><router-link to="/register" class="forgot-password-link mb-2">Daftar Streamer</router-link></div>
 						<div><router-link to="/register-advetiser" class="forgot-password-link mb-2">Daftar Advetiser</router-link></div>
 					</div>
 					<hr>
