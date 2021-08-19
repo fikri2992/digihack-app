@@ -44,8 +44,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="mt-2">Message</div>
-							<textarea id="w3review" name="w3review" v-model="message" rows="1" style="width: 100%; margin-top: auto;" @input="onKeywordChange"></textarea>
+							<div>Message</div>
+							<textarea id="w3review" name="w3review" v-model="message" rows="1" style="width: 100%; margin-top: auto;" @blur="onKeywordChange"></textarea>
 						</div>
 						<!-- table list -->
 						<div>
@@ -155,7 +155,7 @@
 								</div>
 							</div>
 							<div>Message</div>
-							<textarea id="w3review" name="w3review" v-model="messageQNA" rows="3" style="width: 100%; margin-top: auto;" @input="onKeywordChangeQNA"></textarea>
+							<textarea id="w3review" name="w3review" v-model="messageQNA" rows="3" style="width: 100%; margin-top: auto;" @blur="onKeywordChangeQNA"></textarea>
 						</div>
 						<!-- table list -->
 						<div>
@@ -590,9 +590,7 @@ export default {
 			this.updatePolling(content);
 		},
 		onKeywordChange() {
-			delay(() => {
-				this.updatePolling();
-			}, 500);
+			this.updatePolling();
 		},
 		fetchQNA(reset = false, page) {
 			this.isFetchingQNA = true;
@@ -771,9 +769,7 @@ export default {
 			this.updateQNA(content);
 		},
 		onKeywordChangeQNA() {
-			delay(() => {
-				this.updateQNA();
-			}, 500);
+			this.updateQNA();
 		},
 		copyUrl(data) {
 			copyToClipboard(data);
