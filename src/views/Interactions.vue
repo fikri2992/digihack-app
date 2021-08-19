@@ -10,8 +10,8 @@
 					<div class="grid-container">
 						<div>
 							<div class="d-flex justify-content-between">
-								<md-button class="btn-primary ml-0" @click="copyUrl(`${envAPP}/preview/${selectedPolling.id}`)" :disabled="!selectedPolling">Generate Embedable URL</md-button>
-								<md-button class="btn-primary ml-0" @click="copyUrl(`${envAPP}/live/${selectedPolling.id}`)" :disabled="!selectedPolling">Generate Shareable URL</md-button>
+								<md-button class="btn-primary ml-0" @click="copyUrl(`${envAPP}/pollings/live/${selectedPolling.id}`)" :disabled="!selectedPolling">Generate Embedable URL</md-button>
+								<md-button class="btn-primary ml-0" @click="copyUrl(`${envAPP}/pollings/preview/${selectedPolling.id}`)" :disabled="!selectedPolling">Generate Shareable URL</md-button>
 							</div>
 							<div class="d-flex">
 								<md-field class="input mb-0">
