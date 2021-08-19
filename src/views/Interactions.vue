@@ -6,7 +6,7 @@
 				<!-- section 1 -->
 				<!-- polling modal -->
 				<pollings @close="showPollingModal = false" @saved="insertItemPolling" v-if="showPollingModal" :data="selectedPolling"/>
-				<section class="half"  style="overflow: hidden">
+				<section class="half"  style="overflow-y: auto; overflow-x:hidden">
 					<div class="grid-container">
 						<div>
 							<div class="d-flex">

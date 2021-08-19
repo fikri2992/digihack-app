@@ -18,6 +18,19 @@ export default {
 			.catch(errorHandler);
 	},
 
+	// Create categorie
+	sendSmsVerif(params, cb, errorCb) {
+		const responseHandler = (response) => {
+			if (cb) cb(response.data);
+		};
+		const errorHandler = (e) => {
+			if (errorCb) errorCb(e);
+		};
+		const url = `/sendsms`;
+		client.post(url, params)
+			.then(responseHandler)
+			.catch(errorHandler);
+	},
 
 	// Get
 	get(id, cb, errorCb) {

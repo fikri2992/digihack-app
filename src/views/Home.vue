@@ -2,14 +2,14 @@
   <div class="page-container">
     <div class="cards d-flex">
       <!-- offer -->
-      <div class="card--blue mr-3">
+      <!-- <div class="card--blue mr-3">
         <div class="card-body"> 
           Count Offer
             <div class="card-featured">
                 99
             </div>
         </div>
-      </div>
+      </div> -->
       <!-- interaction -->
       <div class="card--blue">
         <div class="card-body"> 
@@ -22,7 +22,7 @@
     </div>
     <!-- statistrics -->
     <div class="mt-7">
-      <chart></chart>
+      <!-- <chart></chart> -->
     </div>
   </div>
 </template>

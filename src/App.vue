@@ -120,7 +120,7 @@ export default {
 		hideToolbar() {
 			const hideNavbar = [
 				'PollingPreview',
-
+				'pollingLive'
 			]
 			return hideNavbar.includes(this.activeRouteName)
 			

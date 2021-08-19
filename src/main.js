@@ -114,12 +114,21 @@ router.beforeEach((to, from, next) => {
 		'/user/verify',
 		'/confirmation-email',
 		'/register-success',
+		'PollingPreview',
+		'pollingLive'
 	];
+	const hideNavbar = [
+		'PollingPreview',
+		'pollingLive'
+	]
+	console.log(hideNavbar.includes(to.name))
 	if (path === '/callback') {
 		next();
-	} else if (!isLoggingIn && path === '/') {
+	} else if (!isLoggingIn && hideNavbar.includes(to.name)) {
+		next();
+	} else if (!isLoggingIn && path === '/' && !hideNavbar.includes(to.name)) {
 		next('/login');
-	} else if (!isLoggingIn && !allowedPaths.includes(path)) {
+	} else if (!isLoggingIn && !allowedPaths.includes(path) && !hideNavbar.includes(to.name)) {
 		next('/login');
 	} else if (isNotAvailable) {
 		next('/');

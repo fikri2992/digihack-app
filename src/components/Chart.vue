@@ -15,11 +15,7 @@ export default {
 	sockets: {
 		create(data) {
 			this.localUserPolling.push(data)
-			console.log(
-this.filteredUserInteractionOne,
-this.filteredUserInteractionTwo,
-this.filteredUserInteractionThree,
-this.filteredUserInteractionFour)
+			this.$nextTick(()=>{
 			this.chartData = {
 				labels: this.filteredPolling,
 				datasets: [
@@ -30,7 +26,6 @@ this.filteredUserInteractionFour)
 					}
 				]
 			}
-			this.$nextTick(()=>{
 				this.$data._chart.data = this.chartData
 				this.$data._chart.update()
 			})
@@ -92,7 +87,7 @@ this.filteredUserInteractionFour)
 	computed: {
 		filteredPolling() {
 			let mappedPolling = []
-			if (this.localPolling && this.localPolling.length>0) {
+			if ( this.localPolling && this.localPolling.length>0 ) {
 				mappedPolling = this.localPolling.map((value)=>{
 					return value.name
 				})

@@ -1,27 +1,20 @@
 <template>
-	<div>
-		<h1 style=" margin-left:50vh" v-if="polling && polling.message">{{ polling.message  }}</h1>
-		<div class="d-flex" style="margin-top:35vh; margin-left:25vh">
-			<div class="d-flex">
-				<div v-for="(polling, index) in contentPolling" :key="index" class="text-center">
-					<div>
-						<img  style="width:300px; height:150px;"  class="mb-3 mr-4" v-if="polling && polling.url" :src="`${env}/uploads/${polling.url}`" alt="">
-					</div>
-					<button style="width:300px; height:150px;" @click="pick(index+1)" class="mb-2 mr-4" > {{ polling.name }} </button> 
-				</div>
-			</div>
-		</div>
+	<div style="background-color:transparent">
+		<chart v-if="contentPolling && contentPolling.length >0 && userInteractions" 
+		:interactionId="pollingId" 
+		:polling="contentPolling" :userPolling="userInteractions"></chart>
 	</div>
 </template>
 
 <script>
 import interactionsApi from '../api/interaction.js'
-import userInteraction from '../api/userInteraction.js'
+import userInteractionApi from '../api/userInteraction.js'
+import Chart from '@/components/Chart.vue';
 
 export default {
-	name: 'InteractionPreview',
+	name: 'InteractionLive',
 	components: {
-
+        Chart
     },
 	data() {
 		return {
@@ -29,6 +22,7 @@ export default {
             selectedPolling: null,
             pollingId: null,
 			env: process.env.VUE_APP_API_URL,
+            userInteractions:null,
         };
 	},
 	sockets: {
@@ -45,7 +39,7 @@ export default {
 	created() {
         this.pollingId = this.$route && this.$route.params && this.$route.params.id ? this.$route.params.id: null;
         this.getPolling(this.pollingId)
-		
+        
     },
 	destroyed() {
 
@@ -61,46 +55,22 @@ export default {
 		},
     },
 	methods: {
-		sendSms() {
-			const callback = (data) => {
-				console.log(data)
-			};
-			const errCallback = (e) => {
-				console.log(e)
-			};
-			const phone= '6281322524082'
-			const params = {
-				interaction_id: this.polling.id,
-				phone: phone,
-				message: `${this.polling.id}${phone.substring(1, 4)}`
+        fetchUserInteractions() {
+            const callback = (response) => {
+				this.userInteractions = response.data;
+                console.log(this.userInteractions)
 			}
-
-			userInteraction.sendSmsVerif(params, callback, errCallback)
-		},
-		pick(key) {
-			const callback = (data) => {
-				console.log(data)
-				this.sendSms()
-			};
-			const errCallback = (e) => {
-				console.log(e)
-			};
-
-			const params = {
-				interaction_id: this.polling.id,
-				phone:'',
-				answer:key,
-				price:0,
+			const errCallback = () => {
 			}
-
-			userInteraction.create(params, callback, errCallback)
-		},
-
+			const id = this.pollingId;
+			userInteractionApi.getByInteractionId(id, callback, errCallback)
+        },
         getPolling(id) {
 			const callback = (response) => {
 				const polling = response.data;
 				this.polling = polling;
                 this.connectToSocket()
+                this.fetchUserInteractions()
 			};
 			const errorCallback = (e) => {
 				const message = getAxiosErrorMessage(e);

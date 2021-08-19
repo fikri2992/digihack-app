@@ -106,6 +106,15 @@ export default new Router({
 			},
 		},
 		{
+			path: '/pollings/live/:id',
+			name: 'pollingLive',
+			component: loadView('InteractionLive'),
+			meta: {
+				title: 'Pollings',
+				gtm: 'Pollings',
+			},
+		},
+		{
 			path: '/pollings/preview/:id',
 			name: 'PollingPreview',
 			component: loadView('InteractionPreview'),
