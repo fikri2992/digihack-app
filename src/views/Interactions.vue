@@ -9,8 +9,9 @@
 				<section class="half"  style="overflow-y: auto; overflow-x:hidden">
 					<div class="grid-container">
 						<div>
-							<div class="d-flex">
-								<md-button class="btn-primary ml-0" :disabled="!selectedPolling">Generate Embedable URL</md-button>
+							<div class="d-flex justify-content-between">
+								<md-button class="btn-primary ml-0" @click="copyUrl(`${envAPP}/preview/${selectedPolling.id}`)" :disabled="!selectedPolling">Generate Embedable URL</md-button>
+								<md-button class="btn-primary ml-0" @click="copyUrl(`${envAPP}/live/${selectedPolling.id}`)" :disabled="!selectedPolling">Generate Shareable URL</md-button>
 							</div>
 							<div class="d-flex">
 								<md-field class="input mb-0">
@@ -236,7 +237,7 @@ import Pagination from '@/components/Pagination.vue';
 import interactionsApi from '@/api/interaction';
 import userInteractionApi from '@/api/userInteraction.js';
 
-import { getAxiosErrorMessage, delay } from '@/lib/helper';
+import { getAxiosErrorMessage, delay, copyToClipboard } from '@/lib/helper';
 import mediasApi from '@/api/media';
 import { mapGetters } from 'vuex';
 
@@ -253,6 +254,7 @@ export default {
 	data() {
 		return {
 			env: process.env.VUE_APP_API_URL,
+			envAPP: process.env.VUE_APP_URL,
 			// polling
 			name: '',
 			description: '',
@@ -297,7 +299,7 @@ export default {
 			nameOptionQNA: '',
 			messageQNA: '',
 			urlImage: '',
-			userInteractions:[]
+			userInteractions:[],
 		};
 	},
 	sockets: {},
@@ -768,6 +770,15 @@ export default {
 		},
 		onKeywordChangeQNA() {
 			this.updateQNA();
+		},
+		copyUrl(data) {
+			copyToClipboard(data);
+			this.$notify({
+				group: 'app',
+				type: 'success',
+				title: this.$t('URL'),
+				text: 'Copied to clipboard',
+			});
 		},
 	},
 	watch: {
