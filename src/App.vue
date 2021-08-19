@@ -69,7 +69,7 @@
 					<div class="d-flex justify-space-between">
 						<div v-if="props.item.type === 'warning'" class="material-icons mr-2 mtb-a">
 							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-								<path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+								<path fill="currentColor" d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" />
 							</svg>
 						</div>
 						<div v-if="props.item.type === 'success'" class="material-icons mr-2 mtb-a">
