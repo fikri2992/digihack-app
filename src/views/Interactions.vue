@@ -45,7 +45,7 @@
 								</div>
 							</div>
 							<div>Message</div>
-							<textarea id="w3review" name="w3review" v-model="message" rows="3" style="width: 100%; margin-top: auto;" @blur="onKeywordChange"></textarea>
+							<textarea id="w3review" name="w3review" v-model="message" rows="1" style="width: 100%; margin-top: auto;" @blur="onKeywordChange"></textarea>
 						</div>
 						<!-- table list -->
 						<div>
