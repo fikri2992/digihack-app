@@ -133,7 +133,7 @@ export default {
 			this.showVerifyCodeModal = false;
 		},
 		showPolling(indexPolling) {
-			this.indexPolling = index;
+			this.indexPolling = indexPolling;
 			const isCannotAccess = localStorage.getItem('isCannotAccess');
 			if (isCannotAccess == this.polling.id) {
 				this.$notify({
@@ -195,9 +195,9 @@ export default {
 
 			const params = {
 				interaction_id: this.polling.id,
-				phone:'',
-				answer:key,
-				price:0,
+				phone: this.phone,
+				answer: key,
+				price: 0,
 			}
 
 			userInteraction.create(params, callback, errCallback)
