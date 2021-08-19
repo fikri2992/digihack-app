@@ -28,7 +28,7 @@
 								</md-button>
 							</div>
 							<label class="text-small text-grey">Maximum Options is 4</label>
-							<div v-for="item in contentPolling" :key="item.key">
+							<div v-for="(item, index) in contentPolling" :key="index">
 								<div class="d-flex">
 									<md-field class="input">
 										{{item.name}}
@@ -113,7 +113,9 @@
 				</section>
 				<!-- section 2 -->
 				<section class="half">
-				
+					<div>
+						<chart v-if="contentPolling && contentPolling.length>0 && selectedPolling" :interactionId="selectedPolling.id" :polling="contentPolling" :userPolling="filteredUserInteraction"></chart>
+					</div>
 				</section>
 			</div>
 		</div>
@@ -139,7 +141,7 @@
 								</md-button>
 							</div>
 							<label class="text-small text-grey">Maximum Question is 4</label>
-							<div v-for="item in contentQNA" :key="item.key">
+							<div v-for="(item,index) in contentQNA" :key="index">
 								<div class="d-flex">
 									<md-field class="input">
 										{{item.name}}
@@ -232,10 +234,13 @@ import Pollings from '@/components/PollingForm.vue';
 import QNAS from '@/components/QnAForm.vue';
 import Pagination from '@/components/Pagination.vue';
 import interactionsApi from '@/api/interaction';
+import userInteractionApi from '@/api/userInteraction.js';
+
 import { getAxiosErrorMessage, delay } from '@/lib/helper';
 import mediasApi from '@/api/media';
 import { mapGetters } from 'vuex';
 
+import Chart from '@/components/Chart.vue';
 
 export default {
 	name: 'Interactions',
@@ -243,6 +248,7 @@ export default {
 		Pollings,
 		QNAS,
 		Pagination,
+		Chart
 	},
 	data() {
 		return {
@@ -291,6 +297,7 @@ export default {
 			nameOptionQNA: '',
 			messageQNA: '',
 			urlImage: '',
+			userInteractions:[]
 		};
 	},
 	sockets: {},
@@ -304,6 +311,7 @@ export default {
 		},
 		contentPolling() {
 			const content = this.selectedPolling && this.selectedPolling.content && this.selectedPolling.content.length > 0 ? JSON.parse(this.selectedPolling.content) : null;
+			
 			return content;
 		},
 		totalPagesQNA() {
@@ -338,6 +346,9 @@ export default {
 				type: 'qna',
 			};
 			return params;
+		},
+		filteredUserInteraction() {
+			return this.userInteractions;
 		},
 		...mapGetters({
 			user: 'user',
@@ -430,8 +441,17 @@ export default {
 			interactionsApi.delete(item.id, callback, errorCallback);
 		},
 		selectPolling(item) {
-			this.selectedPolling = item;
-		},
+			
+			const callback = (response)=> {
+				this.userInteractions = response.data;
+				this.selectedPolling = item;
+			}
+			const errCallback = () => {
+
+			}
+			const id= item.id;
+			userInteractionApi.getByInteractionId(id, callback, errCallback)
+		},	
 		addmedia(e) {
 			const files = e.target.files;
 			if (files.length > 0) {

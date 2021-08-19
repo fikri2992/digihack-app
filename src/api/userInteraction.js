@@ -32,7 +32,19 @@ export default {
 			.then(responseHandler)
 			.catch(errorHandler);
 	},
-
+	// Get
+	getByInteractionId(id, cb, errorCb) {
+		const url = `${endpoint}/getByInteractionId/${id}`;
+		const responseHandler = (response) => {
+			if (cb) cb(response.data);
+		};
+		const errorHandler = (e) => {
+			if (errorCb) errorCb(e);
+		};
+		client.get(url)
+			.then(responseHandler)
+			.catch(errorHandler);
+	},
 	// Get categories
 	getAll(params, cb, errorCb) {
 		const responseHandler = (response) => {

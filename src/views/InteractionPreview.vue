@@ -1,7 +1,11 @@
 <template>
     <div class="d-flex" style="margin-top:35vh; margin-left:25vh">
-        <div v-for="(polling, index) in contentPolling" :key="index" class="mr-3 text-center">
-            <button style="width:300px; height:150px;" @click="pick(polling.key)" class="mb-2 mr-4" > {{ polling.name }} </button> 
+		
+        <div v-for="(polling, index) in contentPolling" :key="index" class="text-center">
+			<div>
+           		<img  style="width:300px; height:150px;"  class="mb-3 mr-4" v-if="polling && polling.url" :src="`${env}/uploads/${polling.url}`" alt="">
+        	</div>
+            <button style="width:300px; height:150px;" @click="pick(index+1)" class="mb-2 mr-4" > {{ polling.name }} </button> 
         </div>
     </div>
 </template>
@@ -19,7 +23,8 @@ export default {
 		return {
             polling: null,
             selectedPolling: null,
-            pollingId: null
+            pollingId: null,
+			env: process.env.VUE_APP_API_URL,
         };
 	},
 	sockets: {
