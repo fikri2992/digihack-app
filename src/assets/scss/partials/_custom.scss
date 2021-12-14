@@ -90,7 +90,7 @@
 }
 
 .md-app-content {
-	min-height: 93vh!important;
+	min-height: 86vh!important;
 }
 .half {
     height: 42.7vh;
@@ -165,4 +165,43 @@
 
 .md-field {
 	margin: 0 0 0 0;
+}
+
+.title-score {
+	font-size: 18px;
+	font-weight: bold;
+	color: rgb(39, 39, 39);
+	.sub-title {
+		font-size: 18px;
+		font-weight: bold;
+	}
+}
+
+.v-divider {
+	width: 2px;
+	background-color: grey;
+	height: 20px;
+	margin-top: 2px;
+	margin-left: 3.85em;
+	position: absolute;
+}
+
+.custom-control-input {
+	top: 0;
+	bottom: 0;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+	color: $btn-primary-color;
+	background-color: $color-primary;
+	border: 0;
+	outline: 0;
+	box-shadow: none;
+	border-radius: $border-radius;
+}
+
+.custom-checkbox {
+	cursor: pointer;
 }

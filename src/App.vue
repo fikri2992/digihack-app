@@ -2,14 +2,13 @@
     <div id="app">
 		<!-- Navbar -->
 		<md-app>
-        <md-app-toolbar class="md-primary" v-if="isLoggingIn && !hideToolbar">
-			<div class="d-flex">
-				<div class="md-title">Engage More</div>
-				<div class="md-title">{{user && user.name ? user.name : ''}}</div>
+        <md-app-toolbar class="md-primary btn-primary" v-if="isLoggingIn && !hideToolbar">
+			<div class="ml-a mr-a">
+				<img src="/logo-sicepat-2.png">
 			</div>
         </md-app-toolbar>
 
-        <md-app-drawer md-permanent="clipped" v-if="isLoggingIn && !hideToolbar">
+        <!-- <md-app-drawer md-permanent="clipped" v-if="isLoggingIn && !hideToolbar">
 			<md-list class="text-nav">
 			<router-link to="/" class="text-nav">
 				<md-list-item :class="{'bg-primary': activeRouteName === 'Home'}">
@@ -30,7 +29,7 @@
 				</md-list-item>
 			</router-link>
 
-			<!-- <router-link to="/qnas" class="text-nav">
+			<router-link to="/qnas" class="text-nav">
 				<md-list-item>
 					<span class="md-list-item-text">Interaction Report</span>
 				</md-list-item>
@@ -46,7 +45,7 @@
 				<md-list-item class="text-nav" :class="{'bg-primary': activeRouteName === 'AdMedia'}">
 					<span class="md-list-item-text">Ad Media</span>
 				</md-list-item>
-			</router-link> -->
+			</router-link>
 			
 			<div class="text-nav pointer" @click="logout">
 				<md-list-item>
@@ -55,13 +54,14 @@
 			</div>
 			
 		</md-list>
-        </md-app-drawer>
+        </md-app-drawer> -->
 
         <md-app-content>
 			<!-- main content -->
 			<router-view/>
         </md-app-content>
 	</md-app>
+	<VueBottomNavigation :options="options" v-model="selectedBottomNav" foregroundColor="#D51B24"/>
 		<!-- Notifications -->
 		<notifications group="app" :ignoreDuplicates="true" position="bottom right" :max="3" :duration="4000" style="z-index: 99989!important;">
 			<template slot="body" slot-scope="props">
@@ -92,14 +92,30 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import VueBottomNavigation from "bottom-navigation-vue";
 import localforage from 'localforage';
 
 export default {
 	name: 'App',
 	components: {
+		VueBottomNavigation,
     },
 	data() {
-		return {};
+		return {
+			selectedBottomNav: 1,
+			options: [
+				{
+					id: 1,
+					icon: "fas fa-camera",
+					title: "Capture",
+				},
+				{
+					id: 2,
+					icon: "fas fa-sign-out-alt",
+					title: "Logout"
+				},
+			],
+		};
 	},
 	sockets: {
 	},

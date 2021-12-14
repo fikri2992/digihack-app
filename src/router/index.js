@@ -174,6 +174,15 @@ export default new Router({
 				gtm: 'AdMedia',
 			},
 		},
+		{
+			path: '/rating',
+			name: 'Rating',
+			component: loadView('Rating'),
+			meta: {
+				title: 'Rating',
+				gtm: 'Rating',
+			},
+		},
 		// Redirect to 404 page, if no match found
 		{
 			path: '*',
