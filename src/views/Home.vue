@@ -128,7 +128,7 @@
       </div>
     </div>
     <button
-      v-if="alamat"
+      v-if="alamat && !isRating"
       type="submit"
       @click="submitScore"
       class="btn btn-submit btn-primary mt-3">
@@ -231,11 +231,8 @@ export default {
 					title: this.$t('pengantaran'),
 					text: 'pengantaran success',
 				});
-        this.isRating = false;
-        this.scanFinished = false;
-        this.alamat = null;
-        const routeData = this.$router.resolve(`/`);
-				window.open(routeData.href, '_self');
+        this.isRating = true;
+        this.scanFinished = true;
 			};
 			const errCallback = (e) => {
 				this.$notify({
