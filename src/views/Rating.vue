@@ -6,7 +6,7 @@
       <div class="title-score pl-1 mb-2">Nilai Akses Alamat</div>
       <div>
         <star-rating
-          v-model="scoreAlamat" 
+          v-model="scoreAlamat"
           v-bind:increment="1"
           v-bind:max-rating="5"
           :rating="0"
@@ -108,6 +108,27 @@
       :class="{ 'is-loading': isSaving }">
       {{ $t('Submit Rating') }}
     </button>
+    <modal
+			size="small"
+			@close="backToHome"
+			v-if="isBackToHome"
+			>
+			<template slot="header">
+				<h3 class="text-white">{{ $t('Penilaian alamat') }}</h3>
+			</template>
+			<template slot="body">
+				Penilaian sudah terkirim
+				<!-- Submit -->
+			</template>
+			<template slot="footer">
+				<button
+					@click="backToHome"
+					type="submit"
+					class="btn btn-submit btn-primary mt-3 text-center">
+					{{ $t('Kembali ke scan QR') }}
+				</button>
+			</template>
+		</modal>
   </div>
 </template>
 
@@ -116,6 +137,7 @@ import Chart from '@/components/Chart.vue';
 import StarRating from 'vue-star-rating';
 import scoringApi from '@/api/scoring';
 import fileApi from '@/api/file';
+import Modal from '@/components/Modal.vue';
 
 export default {
   name: 'Rating',
@@ -127,17 +149,22 @@ export default {
       arrayKekurangan: [],
       arrayKelebihan: [],
       isSaving: false,
-      alamatId: null,
       media: null,
       isUploadingPicture: false,
+      isBackToHome: false,
     };
 	},
   components: {
     Chart,
     StarRating,
+    Modal,
+  },
+  props: {
+    alamatId: {
+    }
   },
   methods: {
-     addMedia(e) {
+    addMedia(e) {
 			const files = e.target.files;
 			if (files.length > 0) {
 				if (files[0].type === 'image/jpeg' || files[0].type === 'image/gif' || files[0].type === 'image/png' || files[0].type === 'image/jpg') {
@@ -187,6 +214,7 @@ export default {
 					title: this.$t('scoring'),
 					text: 'scoring success',
 				});
+        this.isBackToHome = true;
 			};
 			const errCallback = (e) => {
 				this.$notify({
@@ -209,6 +237,10 @@ export default {
 
 			scoringApi.create(params, callback, errCallback)
 		},
+    backToHome() {
+      this.$emit('finish');
+      this.isBackToHome = false;
+    },
   },
   mounted () {
   }

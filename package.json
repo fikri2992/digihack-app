@@ -24,6 +24,7 @@
     "uuid": "^8.3.0",
     "v-tooltip": "^2.0.3",
     "vue": "^2.6.11",
+    "vue-carousel": "^0.18.0",
     "vue-chartjs": "^3.5.1",
     "vue-color": "^2.7.1",
     "vue-flatpickr-component": "^8.1.2",
