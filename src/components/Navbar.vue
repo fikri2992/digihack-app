@@ -2,7 +2,7 @@
 	<div class="page-container">
 		<md-app>
 		<md-app-toolbar class="md-primary">
-			<span class="md-title">Engage More</span>
+			<span class="md-title">Sicepat</span>
 		</md-app-toolbar>
 
 		<md-app-drawer md-permanent="clipped">

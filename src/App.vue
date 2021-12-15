@@ -1,5 +1,6 @@
 <template>
-    <div id="app">
+    <div id="app" style="max-width: 400px;" class="ml-a mr-a">
+	<!-- <div v-if="activeRouteName === 'Login'" class="absolute" style="width: 100vh; height: 100vh; background-color: #DC3545;"></div> -->
 		<!-- Navbar -->
 		<md-app>
         <md-app-toolbar class="md-primary btn-primary" v-if="isLoggingIn && !hideToolbar">
@@ -61,7 +62,7 @@
 			<router-view/>
         </md-app-content>
 	</md-app>
-	<VueBottomNavigation :options="options" v-model="selectedBottomNav" foregroundColor="#D51B24"/>
+	<VueBottomNavigation style="max-width: 400px" v-if="isLoggingIn && !hideToolbar && selectedBottomNav" :options="options" v-model="selectedBottomNav" foregroundColor="#D51B24"/>
 		<!-- Notifications -->
 		<notifications group="app" :ignoreDuplicates="true" position="bottom right" :max="3" :duration="4000" style="z-index: 99989!important;">
 			<template slot="body" slot-scope="props">
@@ -87,18 +88,48 @@
 				</div>
 			</template>
 		</notifications>
+	<!-- modal -->
+		<modal
+			size="small"
+			@close="cancelingLogout"
+			v-if="isConfirmLogout"
+			>
+			<template slot="header">
+				<h3 class="text-white">{{ $t('Logout') }}</h3>
+			</template>
+			<template slot="body">
+				Are you sure want to logout?
+				<!-- Submit -->
+			</template>
+			<template slot="footer">
+				<button
+					@click="logout"
+					type="submit"
+					class="btn btn-submit btn-primary mt-3 text-center">
+					{{ $t('Logout') }}
+				</button>
+				<button
+					@click="cancelingLogout"
+					type="submit"
+					class="btn btn-submit btn-secondary mt-3 text-center">
+					{{ $t('Cancel') }}
+				</button>
+			</template>
+		</modal>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import VueBottomNavigation from "bottom-navigation-vue";
-import localforage from 'localforage';
+import Modal from '@/components/Modal.vue';
+import _Template from './components/_Template.vue';
 
 export default {
 	name: 'App',
 	components: {
 		VueBottomNavigation,
+		Modal,
     },
 	data() {
 		return {
@@ -112,9 +143,10 @@ export default {
 				{
 					id: 2,
 					icon: "fas fa-sign-out-alt",
-					title: "Logout"
+					title: "Logout",
 				},
 			],
+			isConfirmLogout: false,
 		};
 	},
 	sockets: {
@@ -124,7 +156,13 @@ export default {
 	},
 	destroyed() {},
 	beforeDestroy() {},
-	watch: {},
+	watch: {
+		selectedBottomNav() {
+			if (this.selectedBottomNav === 2) {
+				this.isConfirmLogout = true;
+			}
+		},
+	},
 	computed: {
 		...mapGetters({
 			user: 'user',
@@ -148,6 +186,10 @@ export default {
 		logout() {
 			localStorage.clear();
 			location.reload();
+		},
+		cancelingLogout() {
+			this.selectedBottomNav = 1;
+			this.isConfirmLogout = false;
 		},
 	},
 };

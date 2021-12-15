@@ -2,6 +2,7 @@
   <div class="page-container">
     <!-- rating alamat -->
     <div class="mt-3">
+      <input class="btn btn-submit btn-primary mt-3 mr-4 mb-3" style="width: 100%" id="myFileInput" type="file" accept="image/*; capture=camera" @change="addMedia">
       <div class="title-score pl-1 mb-2">Nilai Akses Alamat</div>
       <div>
         <star-rating
@@ -102,6 +103,7 @@
     </div>
     <button
       type="submit"
+      @click="scoring"
       class="btn btn-submit btn-primary mt-3"
       :class="{ 'is-loading': isSaving }">
       {{ $t('Submit Rating') }}
@@ -112,6 +114,8 @@
 <script>
 import Chart from '@/components/Chart.vue';
 import StarRating from 'vue-star-rating';
+import scoringApi from '@/api/scoring';
+import fileApi from '@/api/file';
 
 export default {
   name: 'Rating',
@@ -123,11 +127,88 @@ export default {
       arrayKekurangan: [],
       arrayKelebihan: [],
       isSaving: false,
+      alamatId: null,
+      media: null,
+      isUploadingPicture: false,
     };
 	},
   components: {
     Chart,
     StarRating,
+  },
+  methods: {
+     addMedia(e) {
+			const files = e.target.files;
+			if (files.length > 0) {
+				if (files[0].type === 'image/jpeg' || files[0].type === 'image/gif' || files[0].type === 'image/png' || files[0].type === 'image/jpg') {
+					this.isUploadingPicture = true;
+					const file = files[0];
+					if (!file) {
+						this.$notify({
+							group: 'app',
+							type: 'warn',
+							title: 'Upload File',
+							text: 'Sorry, currently we cant upload the file',
+						});
+						return;
+					}
+					const params = new FormData();
+					
+					params.append('file', file);
+					params.append('file_name', file.name);
+					const callback = (response) => {
+						const item = response.name;
+            this.media = item;
+						this.isUploadingPicture = false;
+					};
+					const errorCallback = () => {
+						this.isUploadingPicture = false;
+					};
+          console.log(params);
+					fileApi.upload(params, callback, errorCallback);
+
+				} else {
+					this.$notify({
+						group: 'app',
+						type: 'warning',
+						title: 'Upload Media',
+						text: 'Unsupported file',
+					});
+					// eslint-disable-next-line
+					return;
+				}
+			}
+		},
+    scoring() {
+			const callback = (data) => {
+				this.$notify({
+					group: 'app',
+					type: 'success',
+					title: this.$t('scoring'),
+					text: 'scoring success',
+				});
+			};
+			const errCallback = (e) => {
+				this.$notify({
+					group: 'app',
+					type: 'error',
+					title: this.$t('scoring'),
+					text: 'scoring went wrong',
+				});
+			};
+
+			const params = {
+				alamat_id: this.alamatId ? this.alamatId : 1,
+				nilai_akses: this.scoreAlamat,
+				nilai_responsif: this.scoreResponsif,
+				nilai_keamanan: this.scoreKeamanan,
+        kekurangan: JSON.stringify(this.arrayKekurangan),
+        kelebihan: JSON.stringify(this.arrayKelebihan),
+        picture: this.media,
+			}
+
+			scoringApi.create(params, callback, errCallback)
+		},
   },
   mounted () {
   }

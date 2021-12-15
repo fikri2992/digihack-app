@@ -1,7 +1,8 @@
 <template>
 <div class="page page-auth">
+	<img src="/logo-sicepat-2.png" style="height: 60px">
 	<div class="card auth-box">
-		<div class="card-body">
+		<div class="">
 			<div class="separator text-small mt-3 mb-3">Login Sicepat</div>
 			<div class="card-text">
 				<form @submit.prevent="login()">
@@ -63,7 +64,8 @@ export default {
 			const callback = (response) => {
 				const data = response.data;
 				this.setToken(data);
-				this.$router.push('/').catch(() => {});
+				const routeData = this.$router.resolve(`/`);
+				window.open(routeData.href, '_self');
 				this.isSubmitting = false;
 			};
 			const errorCallback = (e) => {
