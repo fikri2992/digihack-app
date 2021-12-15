@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-silamban-dev-211645-authRole",
+      "UnauthRoleArn": "arn:aws:iam::073179538526:role/amplify-silamban-dev-211645-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::073179538526:role/amplify-silamban-dev-211645-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-silamban-dev-211645-deployment",
+      "UnauthRoleName": "amplify-silamban-dev-211645-unauthRole",
+      "StackName": "amplify-silamban-dev-211645",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:073179538526:stack/amplify-silamban-dev-211645/7ad80bf0-5ce8-11ec-bd64-0a3b239d0d0a",
+      "AmplifyAppId": "d38ya5ke41jlkn"
+    }
+  }
+}

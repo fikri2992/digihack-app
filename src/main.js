@@ -50,12 +50,12 @@ import './registerServiceWorker';
 
 Vue.config.productionTip = false;
 
-const SOCKET_URL = process.env.VUE_APP_SOCKET_URL || 'http://localhost:3000';
+// const SOCKET_URL = process.env.VUE_APP_SOCKET_URL || 'http://localhost:3000';
 
-// Socket
-const socket = io(SOCKET_URL, {
-	transports: ['websocket'],
-});
+// // Socket
+// const socket = io(SOCKET_URL, {
+// 	transports: ['websocket'],
+// });
 
 // Material Design Components
 Vue.use(MdField);
@@ -82,7 +82,7 @@ Vue.use(MdDrawer);
 // Vue.use(MdSubheader);
 // Vue.use(MdProgress);
 
-Vue.use(VueSocketio, socket, { store });
+// Vue.use(VueSocketio, socket, { store });
 Vue.use(Notifications);
 Vue.use(VTooltip);
 
